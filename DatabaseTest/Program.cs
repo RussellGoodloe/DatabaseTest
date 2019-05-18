@@ -19,9 +19,9 @@ namespace DatabaseTest
             
             string queryA = "SELECT * FROM Customer";
             string queryB = "SELECT DISTINCT c.CustStatus, COUNT(*) AS Number FROM Customer c GROUP BY CustStatus";
-            string queryD = "SELECT DISTINCT c.CustStatus, SUM(TotalNoOfOrders) FROM Customer c WHERE CustStatus LIKE 'Active' GROUP BY CustStatus";
             string queryC = "SELECT * FROM Customer c WHERE DATEDIFF(WEEK, c.LastSeen, GETDATE()) > 12 AND (c.CustStatus LIKE 'Active')";
-
+            string queryD = "SELECT DISTINCT c.CustStatus, SUM(TotalNoOfOrders) FROM Customer c WHERE CustStatus LIKE 'Active' GROUP BY CustStatus";
+            string queryE = "SELECT DISTINCT c.CustStatus, MAX(TotalNoOfOrders) FROM Customer c WHERE CustStatus LIKE 'Active' GROUP BY CustStatus";
             char userInput;
             do
             { 
@@ -31,6 +31,7 @@ namespace DatabaseTest
                 Console.WriteLine("Press 2 to see a breakdown of active vs dormant customers");
                 Console.WriteLine("Press 3 to see customers we're losing");
                 Console.WriteLine("Press 4 to see how many orders active customers have placed");
+                Console.WriteLine("Press 5 to see the avg amount active users spend on an order");
                 Console.WriteLine("Press q to quit");
                 userInput = Console.ReadKey().KeyChar;
                 if (userInput != 'q')
@@ -41,9 +42,9 @@ namespace DatabaseTest
                         ArrayList customers = GetCustomers(query, conn);
                         PrintCustomerResults(customers);
                     }
-                    else if (userInput == '2' || userInput == '4')
+                    else if (userInput == '2' || userInput == '4' || userInput == '5')
                     {
-                        string query = (userInput == '2' ? queryB : queryD);
+                        string query = (userInput == '2' ? queryB : (userInput == '4' ? queryD : queryE));
                         ArrayList results = GetStringAndNumber(query, conn);
                         PrintSmallResults(results);
                     }
