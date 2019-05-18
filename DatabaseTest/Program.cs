@@ -31,8 +31,8 @@ namespace DatabaseTest
                 Console.WriteLine("Press 2 to see a breakdown of active vs dormant customers");
                 Console.WriteLine("Press 3 to see customers we're losing");
                 Console.WriteLine("Press 4 to see how many orders active customers have placed");
-                Console.WriteLine("Press 5 to see the avg amount active users spend on an order");
-                Console.WriteLine("Press q to quit");
+                Console.WriteLine("Press 5 to see the max amount an active user has spend on an order");
+                Console.WriteLine("Press q to quit\n\n");
                 userInput = Console.ReadKey().KeyChar;
                 if (userInput != 'q')
                 {
@@ -56,7 +56,6 @@ namespace DatabaseTest
             } while (userInput != 'q');
 
         }
-
         static public void PrintCustomerResults(ArrayList customers)
         {
             Console.Clear();
