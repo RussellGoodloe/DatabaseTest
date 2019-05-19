@@ -32,6 +32,7 @@ namespace DatabaseTest
                 Console.WriteLine("Press 3 to see customers we're losing");
                 Console.WriteLine("Press 4 to see how many orders active customers have placed");
                 Console.WriteLine("Press 5 to see the max amount an active user has spend on an order");
+                Console.WriteLine("Press 6 to see all email addresses associated with a user");
                 Console.WriteLine("Press q to quit\n\n");
                 userInput = Console.ReadKey().KeyChar;
                 if (userInput != 'q')
@@ -48,6 +49,19 @@ namespace DatabaseTest
                         ArrayList results = GetStringAndNumber(query, conn);
                         PrintSmallResults(results);
                     }
+                    else if (userInput == '6')
+                    {
+                        Console.WriteLine("Enter the customer's ID");
+                        string temp = Console.ReadLine();
+                        string query = "SELECT * FROM Customer_Email e WHERE e.CustID = " + temp;
+                        ArrayList results = GetStrings(query);
+                        foreach (string s in results)
+                        {
+                            Console.WriteLine(s);
+                        }
+                        Console.WriteLine("Press any key to continue");
+                        Console.ReadKey();
+                    }
                     else
                     {
                         Console.WriteLine("Invalid input");
@@ -55,6 +69,31 @@ namespace DatabaseTest
                 }
             } while (userInput != 'q');
 
+        }
+        public static ArrayList GetStrings(string query)
+        {
+            ArrayList results = new ArrayList();
+            try
+            {
+                //Console.WriteLine("Working");
+                SqlConnection myConnect = new SqlConnection(conn);
+                myConnect.Open();
+                //Console.WriteLine("Connected");
+                using (SqlCommand queryOfTheDay = new SqlCommand(query, myConnect))
+                using (SqlDataReader reader = queryOfTheDay.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(reader.GetString(1));
+                    }
+                }
+                myConnect.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error");
+            }
+            return results;
         }
         static public void PrintCustomerResults(ArrayList customers)
         {
